@@ -93,6 +93,55 @@ CERT_VALIDITY_DAYS=365
 └── README.md # Documentation
 
 
+## AWS IAM Permissions
+
+The IAM user or role used to run this script requires the following permissions to interact with AWS Secrets Manager:
+
+-   `secretsmanager:CreateSecret`
+-   `secretsmanager:UpdateSecret`
+-   `secretsmanager:PutSecretValue` (optional, for updating secret values)
+-   `secretsmanager:GetSecretValue` (optional, for reading secrets)
+-   `secretsmanager:DescribeSecret` (optional, for describing secrets)
+
+If you are using a custom KMS key for encrypting your secrets, you will also need:
+
+-   `kms:GenerateDataKey`
+-   `kms:Decrypt`
+
+### Example IAM Policy
+
+Here's an example IAM policy that grants the necessary permissions. Replace `REGION`, `ACCOUNT_ID`, and `SECRET_NAME` with your actual values:
+
+```json
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": [
+        "secretsmanager:CreateSecret",
+        "secretsmanager:UpdateSecret",
+        "secretsmanager:PutSecretValue",
+        "secretsmanager:GetSecretValue",
+        "secretsmanager:DescribeSecret"
+      ],
+      "Resource": [
+        "arn:aws:secretsmanager:REGION:ACCOUNT_ID:secret:SECRET_NAME*"
+      ]
+    },
+    {
+      "Effect": "Allow",
+      "Action": [
+        "kms:GenerateDataKey",
+        "kms:Decrypt"
+      ],
+      "Resource": "YOUR_KMS_KEY_ARN"  # Required only if using a custom KMS key
+    }
+  ]
+}
+Note: It's recommended to grant the least privilege necessary. Limit the Resource to only the secrets your script will manage.
+
+
 ## Error Handling
 
 The script includes error handling for common issues, such as:
