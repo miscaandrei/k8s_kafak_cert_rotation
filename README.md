@@ -88,11 +88,13 @@ CERT_VALIDITY_DAYS=365
 
 ## File Structure
 
+```
 .
-├── cert_rotation.py # Main script
-├── config.py # Configuration file
-├── README.md # Documentation
-└── LICENSE # License agreement
+├── cert_rotation.py   # Main script
+├── config.py          # Configuration file
+├── LICENSE            # License agreement
+└── README.md          # Documentation
+```
 
 
 ## AWS IAM Permissions
